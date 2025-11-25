@@ -1,0 +1,125 @@
+# Russian translations for PROJECT.
+# Copyright (C) 2025 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2025-11-26 00:50+0500\n"
+"PO-Revision-Date: 2025-11-26 00:51+0500\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: ru\n"
+"Language-Team: ru <LL@li.org>\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: bot/functions/make_reply_button.py:14
+msgid "Back ◀️"
+msgstr "Назад ◀️"
+
+#: bot/functions/make_reply_button.py:24
+msgid "Back 🔙"
+msgstr "Назад 🔙"
+
+#: bot/handlers/main_router.py:35
+msgid "❌ Invalid link!"
+msgstr "❌ Неверная ссылка!"
+
+#: bot/handlers/main_router.py:42
+msgid ""
+"You are now sending an anonymous message to this user 💌.\n"
+"Type your message below:"
+msgstr "Вы теперь отправляете анонимное сообщение этому пользователю 💌.\nВведите ваше сообщение ниже:"
+
+#: bot/handlers/main_router.py:50 bot/handlers/main_router.py:261
+#: bot/handlers/main_router.py:313
+msgid "🔗 Create a link"
+msgstr "🔗 Создать ссылку"
+
+#: bot/handlers/main_router.py:51 bot/handlers/main_router.py:262
+#: bot/handlers/main_router.py:314
+msgid "💬 Comments and Offers"
+msgstr "💬 Комментарии и предложения"
+
+#: bot/handlers/main_router.py:52 bot/handlers/main_router.py:263
+#: bot/handlers/main_router.py:315
+msgid "ℹ️ About bot"
+msgstr "ℹ️ О боте"
+
+#: bot/handlers/main_router.py:53 bot/handlers/main_router.py:264
+#: bot/handlers/main_router.py:316
+msgid "🌐 Language 🇺🇸/🇺🇿/🇷🇺"
+msgstr "🌐 Язык 🇺🇸/🇺🇿/🇷🇺"
+
+#: bot/handlers/main_router.py:57
+msgid "Welcome to Anonymous chat bot!"
+msgstr "Добро пожаловать в анонимный чат-бот!"
+
+#: bot/handlers/main_router.py:69 bot/handlers/main_router.py:130
+msgid ""
+"\n"
+"\n"
+"➡️ Swipe right on this message to reply anonymously"
+msgstr "\n\n➡️ Проведите вправо по этому сообщению, чтобы ответить анонимно"
+
+#: bot/handlers/main_router.py:112
+msgid "💌 Message sent anonymously! You can send another one 😁➡️"
+msgstr "💌 Сообщение отправлено анонимно! Вы можете отправить еще одно 😁➡️"
+
+#: bot/handlers/main_router.py:173
+msgid "💌 Reply sent anonymously! 😁✨"
+msgstr "💌 Ответ отправлен анонимно! 😁✨"
+
+#: bot/handlers/main_router.py:193
+msgid "Your unique link has been created! 💫"
+msgstr "Ваша уникальная ссылка создана! 💫"
+
+#: bot/handlers/main_router.py:194
+msgid "📎 Send this link to others so they can message you anonymously 💌✨:"
+msgstr "📎 Отправьте эту ссылку другим, чтобы они могли писать вам анонимно 💌✨:"
+
+#: bot/handlers/main_router.py:210
+msgid ""
+"ℹ️ *About This Bot*\n"
+"\n"
+"1️⃣ This bot lets people send anonymous messages to others via a personal"
+" link 💌\n"
+"\n"
+"2️⃣ All sender information is kept private 👤\n"
+"\n"
+"3️⃣ Messages are delivered instantly and securely ⚡️🔒\n"
+"\n"
+"4️⃣ Please avoid offensive or curse words while sending messages 🤬\n"
+"\n"
+"5️⃣ Enjoy sending and receiving anonymous messages safely 🥂"
+msgstr "ℹ️ *О боте*\n\n1️⃣ Этот бот позволяет людям отправлять анонимные сообщения другим через личную ссылку 💌\n\n2️⃣ Вся информация отправителя сохраняется в тайне 👤\n\n3️⃣ Сообщения доставляются мгновенно и безопасно ⚡️🔒\n\n4️⃣ Пожалуйста, избегайте оскорбительных слов при отправке сообщений 🤬\n\n5️⃣ Наслаждайтесь безопасной отправкой и получением анонимных сообщений 🥂"
+
+#: bot/handlers/main_router.py:234
+msgid "Please type your comment below 💬. Press 'Back ◀️' to go to the main menu."
+msgstr "Пожалуйста, введите ваш комментарий ниже 💬. Нажмите 'Назад ◀️', чтобы вернуться в главное меню."
+
+#: bot/handlers/main_router.py:255
+msgid "Thank you for your comment 💬! Feel free to add another one 😁."
+msgstr "Спасибо за ваш комментарий 💬! Можете добавить еще один 😁."
+
+#: bot/handlers/main_router.py:270
+msgid "Welcome back to the Main Menu 🏠"
+msgstr "С возвращением в главное меню 🏠"
+
+#: bot/handlers/main_router.py:286
+msgid "🌐 Please choose your preferred language"
+msgstr "🌐 Пожалуйста, выберите предпочитаемый язык"
+
+#: bot/handlers/main_router.py:321
+msgid "Language has been changed 😀"
+msgstr "Язык изменен 😀"
+
+#: bot/handlers/main_router.py:323
+msgid "❌ Invalid language selection! Please choose a valid language 🌐"
+msgstr "❌ Неверный выбор языка! Пожалуйста, выберите корректный язык 🌐"
