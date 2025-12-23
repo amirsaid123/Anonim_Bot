@@ -14,7 +14,7 @@ from database.session import get_db_session
 
 main = Router()
 
-ADMINS = [7634998249, 1404107332, 7458049575, 1603170276]
+ADMINS = [7634998249, 1404107332, 7458049575, 1603170276, 5068281495]
 
 
 @main.message(CommandStart())
