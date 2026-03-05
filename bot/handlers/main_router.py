@@ -374,7 +374,7 @@ async def add_admin_handler(message: Message, state: FSMContext):
 
     session = await get_db_session()
     # Add to database as normal admin (not super)
-    await add_admin(session, telegram_id=admin_id, super_admin=False)
+    await add_admin(session, telegram_id=admin_id)
     await session.close()
 
     await message.answer(_("✅ Admin has been added successfully!"))
@@ -438,7 +438,7 @@ async def show_admins_handler(callback: CallbackQuery):
 
     # Normal admins
     text += "\n🛡 <b>Admins:</b>\n"
-    normal_admins = [a for a in admins if not a.is_super]
+    normal_admins = [a for a in admins]
 
     if normal_admins:
         for admin in normal_admins:
