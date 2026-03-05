@@ -191,10 +191,10 @@ async def get_comments_today(session: AsyncSession) -> int:
     return result.scalar() or 0
 
 
-async def add_admin(session: AsyncSession, telegram_id: int, super_admin: bool = False):
+async def add_admin(session: AsyncSession, telegram_id: int):
     existing = await session.get(Admin, telegram_id)
     if not existing:
-        new_admin = Admin(telegram_id=telegram_id, is_super=super_admin)
+        new_admin = Admin(telegram_id=telegram_id)
         session.add(new_admin)
         await session.commit()
         await session.refresh(new_admin)
