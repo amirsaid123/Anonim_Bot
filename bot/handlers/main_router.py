@@ -115,7 +115,7 @@ async def send_anon(message: Message, state: FSMContext):
 
 
 @main.message(F.reply_to_message)
-async def handle_reply(message: Message, state: FSMContext):
+async def handle_reply(message: Message):
     replied_msg_id = message.reply_to_message.message_id
     current_user_id = message.from_user.id
     user = message.from_user
