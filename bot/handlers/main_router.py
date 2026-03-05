@@ -1,20 +1,22 @@
-from datetime import datetime
 from aiogram import F
 from aiogram import Router
+from aiogram.filters import Command
 from aiogram.filters import CommandStart
 from aiogram.fsm.context import FSMContext
-from aiogram.types import Message
+from aiogram.types import CallbackQuery
 from aiogram.utils.i18n import gettext as _
 from aiogram.utils.i18n import lazy_gettext as __
 from aiogram.utils.markdown import hbold
 from bot.functions import make_reply_button, make_back_button, UserStates, make_language_button, LanguageStates
+from bot.functions.make_inline_button import make_inline_button
 from bot.handlers.functions import send_comment_to_admin_group
-from database import insert_user, insert_comment, save_message, get_chat_partner
+from database.functions import *
 from database.session import get_db_session
 
 main = Router()
 
-ADMINS = [7634998249, 1404107332, 7458049575, 1603170276, 5068281495]
+ADMINS = [7634998249]
+SUPER_ADMIN = [7634998249]
 
 
 @main.message(CommandStart())
@@ -58,7 +60,7 @@ async def start_handler(message: Message, command: CommandStart.commands, state:
         await state.update_data(telegram_id=telegram_id)
 
 
-@main.message(UserStates.waiting_for_message)
+@main.message(UserStates.waiting_for_message, F.reply_to_message.is_(None))
 async def send_anon(message: Message, state: FSMContext):
     data = await state.get_data()
     receiver_id = data["receiver_id"]
@@ -112,7 +114,7 @@ async def send_anon(message: Message, state: FSMContext):
 
 
 @main.message(F.reply_to_message)
-async def handle_reply(message: Message):
+async def handle_reply(message: Message, state: FSMContext):
     replied_msg_id = message.reply_to_message.message_id
     current_user_id = message.from_user.id
     user = message.from_user
@@ -321,3 +323,170 @@ async def change_language_handler(message: Message, state: FSMContext, i18n):
         await message.answer(_("Language has been changed 😀"), reply_markup=keyboard)
     else:
         await message.answer(_("❌ Invalid language selection! Please choose a valid language 🌐"))
+
+
+@main.message(Command("admin"))
+async def admin_panel_handler(message: Message):
+    user_id = message.from_user.id
+
+    if user_id not in SUPER_ADMIN:
+        await message.answer("⛔ You are not authorized.")
+        return
+
+    buttons = [
+        "➕ Add Admin",
+        "➖ Remove Admin",
+        "📋 See All Admins",
+        "📊 Bot Statistics"
+    ]
+
+    adjust = [1, 2, 1]
+    keyboard = await make_inline_button(buttons, adjust)
+    await message.answer("Welcome to the Admin panel", reply_markup=keyboard)
+
+
+@main.callback_query(F.data == "➕")
+async def add_admin_handler(callback: CallbackQuery, state: FSMContext):
+    if callback.from_user.id not in SUPER_ADMIN:
+        await callback.answer("Not allowed", show_alert=True)
+        return
+
+    await callback.message.answer(
+        "Send the id of the user you want to add as admin"
+    )
+
+    await state.set_state(UserStates.waiting_for_add_admin)
+
+    await callback.answer()
+
+
+@main.message(UserStates.waiting_for_add_admin)
+async def add_admin_handler(message: Message, state: FSMContext):
+    admin_id = message.text.strip()
+    if admin_id.isdigit():
+        ADMINS.append(int(admin_id))
+        await message.answer(_("Admin has been added"))
+        await state.clear()
+
+
+@main.callback_query(F.data == "➖")
+async def add_admin_handler(callback: CallbackQuery, state: FSMContext):
+    if callback.from_user.id not in SUPER_ADMIN:
+        await callback.answer("Not allowed", show_alert=True)
+        return
+
+    await callback.message.answer(
+        "Send the id of the user you want to remove as admin"
+    )
+
+    await state.set_state(UserStates.waiting_for_remove_admin)
+
+    await callback.answer()
+
+
+@main.message(UserStates.waiting_for_remove_admin)
+async def add_admin_handler(message: Message, state: FSMContext):
+    admin_id = message.text.strip()
+    if int(admin_id) in ADMINS:
+        ADMINS.remove(int(admin_id))
+        await message.answer(_("Admin has been removed"))
+        await state.clear()
+    else:
+        await message.answer(_("Admin does not exist"))
+        await state.clear()
+
+
+@main.callback_query(F.data == "📋")
+async def show_admins_handler(callback: CallbackQuery):
+    if callback.from_user.id not in SUPER_ADMIN:
+        await callback.answer("Not allowed", show_alert=True)
+        return
+
+    text = "👑 <b>ADMIN PANEL</b>\n\n"
+
+    # Super Admins
+    text += "👑 <b>Super Admins:</b>\n"
+    for admin_id in SUPER_ADMIN:
+        text += f"   └ <code>{admin_id}</code>\n"
+
+    text += "\n🛡 <b>Admins:</b>\n"
+
+    normal_admins = [a for a in ADMINS if a not in SUPER_ADMIN]
+
+    if normal_admins:
+        for admin_id in normal_admins:
+            text += f"   └ <code>{admin_id}</code>\n"
+    else:
+        text += "   └ No additional admins\n"
+
+    await callback.message.answer(
+        text,
+        parse_mode="HTML"
+    )
+
+    await callback.answer()
+
+
+@main.callback_query(F.data == "📊")
+async def show_statistics_handler(callback: CallbackQuery):
+    if callback.from_user.id not in SUPER_ADMIN:
+        await callback.answer("Not allowed", show_alert=True)
+        return
+
+    session = await get_db_session()
+
+    # --- USER STATS ---
+    total_users = await get_total_users(session)
+    users_today = await get_users_today(session)
+    users_week = await get_users_this_week(session)
+
+    # --- MESSAGE STATS ---
+    total_messages = await get_total_messages(session)
+    messages_today = await get_messages_today(session)
+    messages_week = await get_messages_this_week(session)
+
+    most_active = await get_most_active_sender(session)
+
+    # --- COMMENT STATS ---
+    total_comments = await get_total_comments(session)
+    comments_today = await get_comments_today(session)
+
+    await session.close()
+
+    # --- Most Active User Formatting ---
+    if most_active:
+        most_active_text = (
+            f"🥇 <b>Most Active User</b>\n"
+            f"   └ ID: <code>{most_active['sender_id']}</code>\n"
+            f"   └ Messages: <b>{most_active['message_count']}</b>\n"
+        )
+    else:
+        most_active_text = "🥇 <b>Most Active User</b>\n   └ No data yet\n"
+
+    # --- Final Beautiful Message ---
+    text = (
+        "📊 <b>BOT STATISTICS DASHBOARD</b>\n"
+        "━━━━━━━━━━━━━━━━━━\n\n"
+
+        "👥 <b>Users</b>\n"
+        f"   ├ Total Users: <b>{total_users}</b>\n"
+        f"   ├ Joined Today: <b>{users_today}</b>\n"
+        f"   └ Joined This Week: <b>{users_week}</b>\n\n"
+
+        "💌 <b>Messages</b>\n"
+        f"   ├ Total Messages: <b>{total_messages}</b>\n"
+        f"   ├ Sent Today: <b>{messages_today}</b>\n"
+        f"   └ Sent This Week: <b>{messages_week}</b>\n\n"
+
+        f"{most_active_text}\n"
+
+        "💬 <b>Comments</b>\n"
+        f"   ├ Total Comments: <b>{total_comments}</b>\n"
+        f"   └ Today: <b>{comments_today}</b>\n\n"
+
+        "━━━━━━━━━━━━━━━━━━\n"
+
+    )
+
+    await callback.message.answer(text, parse_mode="HTML")
+    await callback.answer()

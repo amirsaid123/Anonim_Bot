@@ -1,7 +1,9 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Optional
-from sqlalchemy import select
+
+from sqlalchemy import select, func, desc
 from sqlalchemy.ext.asyncio import AsyncSession
+
 from database.models import Comment, Message, User
 
 
@@ -94,3 +96,96 @@ async def get_chat_partner(
         return receiver_id
     else:
         return None
+
+
+async def get_total_users(session: AsyncSession) -> int:
+    result = await session.execute(
+        select(func.count(User.telegram_id))
+    )
+    return result.scalar() or 0
+
+
+async def get_users_today(session: AsyncSession) -> int:
+    today = datetime.utcnow().date()
+
+    result = await session.execute(
+        select(func.count(User.telegram_id))
+        .where(func.date(User.joined_date) == today)
+    )
+    return result.scalar() or 0
+
+
+async def get_users_this_week(session: AsyncSession) -> int:
+    week_ago = datetime.utcnow() - timedelta(days=7)
+
+    result = await session.execute(
+        select(func.count(User.telegram_id))
+        .where(User.joined_date >= week_ago)
+    )
+    return result.scalar() or 0
+
+
+async def get_total_messages(session: AsyncSession) -> int:
+    result = await session.execute(
+        select(func.count(Message.id))
+    )
+    return result.scalar() or 0
+
+
+async def get_messages_today(session: AsyncSession) -> int:
+    today = datetime.utcnow().date()
+
+    result = await session.execute(
+        select(func.count(Message.id))
+        .where(func.date(Message.created_at) == today)
+    )
+    return result.scalar() or 0
+
+
+async def get_messages_this_week(session: AsyncSession) -> int:
+    week_ago = datetime.utcnow() - timedelta(days=7)
+
+    result = await session.execute(
+        select(func.count(Message.id))
+        .where(Message.created_at >= week_ago)
+    )
+    return result.scalar() or 0
+
+
+async def get_most_active_sender(session: AsyncSession):
+    result = await session.execute(
+        select(
+            Message.sender_id,
+            func.count(Message.id).label("message_count")
+        )
+        .group_by(Message.sender_id)
+        .order_by(desc("message_count"))
+        .limit(1)
+    )
+
+    row = result.first()
+
+    if not row:
+        return None
+
+    return {
+        "sender_id": row.sender_id,
+        "message_count": row.message_count
+    }
+
+
+async def get_total_comments(session: AsyncSession) -> int:
+    result = await session.execute(
+        select(func.count(Comment.id))
+    )
+    return result.scalar() or 0
+
+
+async def get_comments_today(session: AsyncSession) -> int:
+    today = datetime.utcnow().date()
+
+    result = await session.execute(
+        select(func.count(Comment.id))
+        .where(func.date(Comment.created_at) == today)
+    )
+    return result.scalar() or 0
