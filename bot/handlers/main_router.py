@@ -219,7 +219,7 @@ async def about_handler(message: Message, state: FSMContext):
 @main.message(F.text == __("💬 Comments and Offers"))
 async def comment_handler(message: Message, state: FSMContext):
     data = await state.get_data()
-    user_id = message.from_user.id
+    user_id = message.from_user.idwai
     code = data.get('locale')
     await state.clear()
     retained_data = {

@@ -102,10 +102,8 @@ class Message(Base):
         back_populates="received_messages"
     )
 
-from sqlalchemy import Boolean
 
 class Admin(Base):
     __tablename__ = "admins"
 
     telegram_id: Mapped[int] = mapped_column(BIGINT, primary_key=True, autoincrement=False)
-    is_super: Mapped[bool] = mapped_column(Boolean, default=False)
