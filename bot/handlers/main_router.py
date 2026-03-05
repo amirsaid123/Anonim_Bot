@@ -15,7 +15,6 @@ from database.session import get_db_session
 
 main = Router()
 
-ADMINS = [7634998249]
 SUPER_ADMIN = [7634998249]
 
 
@@ -70,7 +69,10 @@ async def send_anon(message: Message, state: FSMContext):
 
     text_footer = _("\n\n➡️ Swipe right on this message to reply anonymously")
 
-    if receiver_id in ADMINS:
+    session = await get_db_session()
+    admins = await list_admins(session)
+    admin_ids = [a.telegram_id for a in admins]
+    if receiver_id in admin_ids:
         admin_info = (
             f"\n\n{hbold('👤 SENDER INFO')}"
             f"\n👤 Name: {message.from_user.full_name}"
@@ -100,7 +102,6 @@ async def send_anon(message: Message, state: FSMContext):
             protect_content=True
         )
 
-    session = await get_db_session()
     await save_message(
         session=session,
         sender_id=sender_id,
@@ -128,8 +129,9 @@ async def handle_reply(message: Message, state: FSMContext):
     original_text = (message.caption or message.text or "Media message").strip()
 
     footer = _("\n\n➡️ Swipe right on this message to reply anonymously")
-
-    if target_id in ADMINS:
+    admins = await list_admins(session)
+    admin_ids = [a.telegram_id for a in admins]
+    if target_id in admin_ids:
         admin_info = (
             f"\n\n{hbold('👤 REPLY FROM')}"
             f"\n👤 Name: {user.full_name}"
@@ -363,10 +365,20 @@ async def add_admin_handler(callback: CallbackQuery, state: FSMContext):
 @main.message(UserStates.waiting_for_add_admin)
 async def add_admin_handler(message: Message, state: FSMContext):
     admin_id = message.text.strip()
-    if admin_id.isdigit():
-        ADMINS.append(int(admin_id))
-        await message.answer(_("Admin has been added"))
-        await state.clear()
+
+    if not admin_id.isdigit():
+        await message.answer(_("❌ Invalid ID! Please send a numeric Telegram ID."))
+        return
+
+    admin_id = int(admin_id)
+
+    session = await get_db_session()
+    # Add to database as normal admin (not super)
+    await add_admin(session, telegram_id=admin_id, super_admin=False)
+    await session.close()
+
+    await message.answer(_("✅ Admin has been added successfully!"))
+    await state.clear()
 
 
 @main.callback_query(F.data == "➖")
@@ -385,16 +397,25 @@ async def add_admin_handler(callback: CallbackQuery, state: FSMContext):
 
 
 @main.message(UserStates.waiting_for_remove_admin)
-async def add_admin_handler(message: Message, state: FSMContext):
+async def remove_admin_handler(message: Message, state: FSMContext):
     admin_id = message.text.strip()
-    if int(admin_id) in ADMINS:
-        ADMINS.remove(int(admin_id))
-        await message.answer(_("Admin has been removed"))
-        await state.clear()
-    else:
-        await message.answer(_("Admin does not exist"))
-        await state.clear()
 
+    if not admin_id.isdigit():
+        await message.answer(_("❌ Invalid ID! Please send a numeric Telegram ID."))
+        return
+
+    admin_id = int(admin_id)
+    session = await get_db_session()
+
+    removed = await remove_admin(session, telegram_id=admin_id)
+    await session.close()
+
+    if removed:
+        await message.answer(_("✅ Admin has been removed successfully!"))
+    else:
+        await message.answer(_("❌ Admin does not exist."))
+
+    await state.clear()
 
 @main.callback_query(F.data == "📋")
 async def show_admins_handler(callback: CallbackQuery):
@@ -402,20 +423,26 @@ async def show_admins_handler(callback: CallbackQuery):
         await callback.answer("Not allowed", show_alert=True)
         return
 
+    session = await get_db_session()
+
+    admins = await list_admins(session)
+    await session.close()
+
     text = "👑 <b>ADMIN PANEL</b>\n\n"
 
     # Super Admins
     text += "👑 <b>Super Admins:</b>\n"
-    for admin_id in SUPER_ADMIN:
-        text += f"   └ <code>{admin_id}</code>\n"
+    super_admins = [a for a in SUPER_ADMIN]
+    for admin in super_admins:
+        text += f"   └ <code>{admin}</code>\n"
 
+    # Normal admins
     text += "\n🛡 <b>Admins:</b>\n"
-
-    normal_admins = [a for a in ADMINS if a not in SUPER_ADMIN]
+    normal_admins = [a for a in admins if not a.is_super]
 
     if normal_admins:
-        for admin_id in normal_admins:
-            text += f"   └ <code>{admin_id}</code>\n"
+        for admin in normal_admins:
+            text += f"   └ <code>{admin.telegram_id}</code>\n"
     else:
         text += "   └ No additional admins\n"
 
@@ -425,8 +452,6 @@ async def show_admins_handler(callback: CallbackQuery):
     )
 
     await callback.answer()
-
-
 @main.callback_query(F.data == "📊")
 async def show_statistics_handler(callback: CallbackQuery):
     if callback.from_user.id not in SUPER_ADMIN:

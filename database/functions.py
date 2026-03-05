@@ -4,7 +4,7 @@ from typing import Optional
 from sqlalchemy import select, func, desc
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from database.models import Comment, Message, User
+from database.models import Comment, Message, User, Admin
 
 
 async def insert_user(
@@ -189,3 +189,28 @@ async def get_comments_today(session: AsyncSession) -> int:
         .where(func.date(Comment.created_at) == today)
     )
     return result.scalar() or 0
+
+
+async def add_admin(session: AsyncSession, telegram_id: int, super_admin: bool = False):
+    existing = await session.get(Admin, telegram_id)
+    if not existing:
+        new_admin = Admin(telegram_id=telegram_id, is_super=super_admin)
+        session.add(new_admin)
+        await session.commit()
+        await session.refresh(new_admin)
+        return new_admin
+    return existing
+
+
+async def remove_admin(session: AsyncSession, telegram_id: int):
+    admin = await session.get(Admin, telegram_id)
+    if admin:
+        await session.delete(admin)
+        await session.commit()
+        return True
+    return False
+
+
+async def list_admins(session: AsyncSession):
+    result = await session.execute(select(Admin))
+    return result.scalars().all()
