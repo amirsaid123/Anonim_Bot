@@ -59,120 +59,6 @@ async def start_handler(message: Message, command: CommandStart.commands, state:
         await state.update_data(telegram_id=telegram_id)
 
 
-@main.message(UserStates.waiting_for_message, F.reply_to_message.is_(None))
-async def send_anon(message: Message, state: FSMContext):
-    data = await state.get_data()
-    receiver_id = data["receiver_id"]
-    sender_id = message.from_user.id
-
-    original_text = (message.caption or message.text or "Media message").strip()
-
-    text_footer = _("\n\n➡️ Swipe right on this message to reply anonymously")
-
-    session = await get_db_session()
-    admins = await list_admins(session)
-    admin_ids = [a.telegram_id for a in admins]
-    if receiver_id in admin_ids:
-        admin_info = (
-            f"\n\n{hbold('👤 SENDER INFO')}"
-            f"\n👤 Name: {message.from_user.full_name}"
-            f"\n💻 Username: @{message.from_user.username or 'none'}"
-            f"\n🆔 ID: <code>{sender_id}</code>"
-            f"\n🔗 Profile: <a href='tg://user?id={sender_id}'>Open profile</a>"
-        )
-        final_caption = f"📨 NEW ANONYMOUS MESSAGE\n\n{original_text}{admin_info}{text_footer}"
-    else:
-        final_caption = _(f"💌 ANONYMOUS MESSAGE\n\n{original_text}{text_footer}")
-
-    if message.content_type == "text":
-        sent = await message.bot.send_message(
-            chat_id=receiver_id,
-            text=final_caption,
-            parse_mode="HTML",
-            protect_content=True,
-            disable_web_page_preview=True
-        )
-    else:
-        sent = await message.bot.copy_message(
-            chat_id=receiver_id,
-            from_chat_id=message.chat.id,
-            message_id=message.message_id,
-            caption=final_caption,
-            parse_mode="HTML",
-            protect_content=True
-        )
-
-    await save_message(
-        session=session,
-        sender_id=sender_id,
-        receiver_id=receiver_id,
-        text=original_text,
-        telegram_message_id=sent.message_id
-    )
-    await session.close()
-
-    await message.answer(_("💌 Message sent anonymously! You can send another one 😁➡️"))
-
-
-@main.message(F.reply_to_message)
-async def handle_reply(message: Message):
-    replied_msg_id = message.reply_to_message.message_id
-    current_user_id = message.from_user.id
-    user = message.from_user
-
-    session = await get_db_session()
-    target_id = await get_chat_partner(session, replied_msg_id, current_user_id)
-
-    if not target_id:
-        return
-
-    original_text = (message.caption or message.text or "Media message").strip()
-
-    footer = _("\n\n➡️ Swipe right on this message to reply anonymously")
-    admins = await list_admins(session)
-    admin_ids = [a.telegram_id for a in admins]
-    if target_id in admin_ids:
-        admin_info = (
-            f"\n\n{hbold('👤 REPLY FROM')}"
-            f"\n👤 Name: {user.full_name}"
-            f"\n💻 Username: @{user.username or 'none'}"
-            f"\n🆔 ID: <code>{current_user_id}</code>"
-            f"\n🔗 Profile: <a href='tg://user?id={current_user_id}'>Open profile</a>"
-        )
-        final_caption = f"📨 ANONYMOUS REPLY\n\n{original_text}{admin_info}{footer}"
-    else:
-        final_caption = _(f"💌 ANONYMOUS REPLY\n\n{original_text}{footer}")
-
-    if message.content_type == "text":
-        sent_reply = await message.bot.send_message(
-            chat_id=target_id,
-            text=final_caption,
-            parse_mode="HTML",
-            protect_content=True,
-            disable_web_page_preview=True
-        )
-    else:
-        sent_reply = await message.bot.copy_message(
-            chat_id=target_id,
-            from_chat_id=message.chat.id,
-            message_id=message.message_id,
-            caption=final_caption,
-            parse_mode="HTML",
-            protect_content=True
-        )
-
-    await save_message(
-        session=session,
-        sender_id=current_user_id,
-        receiver_id=target_id,
-        text=original_text,
-        telegram_message_id=sent_reply.message_id
-    )
-    await session.close()
-
-    await message.answer(_("💌 Reply sent anonymously! 😁✨"))
-
-
 @main.message(F.text == __("🔗 Create a link"))
 async def create_link_handler(message: Message, state: FSMContext):
     data = await state.get_data()
@@ -290,43 +176,6 @@ async def language_handler(message: Message, state: FSMContext):
     await message.answer(_("🌐 Please choose your preferred language"), reply_markup=keyboard)
 
 
-@main.message(LanguageStates.language, F.text != __("Back 🔙"))
-async def change_language_handler(message: Message, state: FSMContext, i18n):
-    lang = {
-        "🇺🇸 English": "en",
-        "🇷🇺 Русский": "ru",
-        "🇺🇿 O'zbekcha": "uz",
-    }
-    code = lang.get(message.text.strip())
-
-    if code:
-        data = await state.get_data()
-        user_id = data.get('user_id', message.from_user.id)
-
-        await state.update_data(locale=code)
-
-        i18n.current_locale = code
-
-        retained_data = {
-            'user_id': user_id,
-            'locale': code
-        }
-        await state.clear()
-        await state.update_data(**retained_data)
-        main_menu = [
-            _("🔗 Create a link"),
-            _("💬 Comments and Offers"),
-            _("ℹ️ About bot"),
-            _("🌐 Language 🇺🇸/🇺🇿/🇷🇺")
-        ]
-
-        adjust = [1, 2, 1]
-        keyboard = await make_reply_button(main_menu, adjust)
-        await message.answer(_("Language has been changed 😀"), reply_markup=keyboard)
-    else:
-        await message.answer(_("❌ Invalid language selection! Please choose a valid language 🌐"))
-
-
 @main.message(Command("admin"))
 async def admin_panel_handler(message: Message):
     user_id = message.from_user.id
@@ -417,6 +266,7 @@ async def remove_admin_handler(message: Message, state: FSMContext):
 
     await state.clear()
 
+
 @main.callback_query(F.data == "📋")
 async def show_admins_handler(callback: CallbackQuery):
     if callback.from_user.id not in SUPER_ADMIN:
@@ -452,6 +302,8 @@ async def show_admins_handler(callback: CallbackQuery):
     )
 
     await callback.answer()
+
+
 @main.callback_query(F.data == "📊")
 async def show_statistics_handler(callback: CallbackQuery):
     if callback.from_user.id not in SUPER_ADMIN:
@@ -515,3 +367,154 @@ async def show_statistics_handler(callback: CallbackQuery):
 
     await callback.message.answer(text, parse_mode="HTML")
     await callback.answer()
+
+
+@main.message(LanguageStates.language, F.text != __("Back 🔙"))
+async def change_language_handler(message: Message, state: FSMContext, i18n):
+    lang = {
+        "🇺🇸 English": "en",
+        "🇷🇺 Русский": "ru",
+        "🇺🇿 O'zbekcha": "uz",
+    }
+    code = lang.get(message.text.strip())
+
+    if code:
+        data = await state.get_data()
+        user_id = data.get('user_id', message.from_user.id)
+
+        await state.update_data(locale=code)
+
+        i18n.current_locale = code
+
+        retained_data = {
+            'user_id': user_id,
+            'locale': code
+        }
+        await state.clear()
+        await state.update_data(**retained_data)
+        main_menu = [
+            _("🔗 Create a link"),
+            _("💬 Comments and Offers"),
+            _("ℹ️ About bot"),
+            _("🌐 Language 🇺🇸/🇺🇿/🇷🇺")
+        ]
+
+        adjust = [1, 2, 1]
+        keyboard = await make_reply_button(main_menu, adjust)
+        await message.answer(_("Language has been changed 😀"), reply_markup=keyboard)
+    else:
+        await message.answer(_("❌ Invalid language selection! Please choose a valid language 🌐"))
+
+
+@main.message(UserStates.waiting_for_message, F.reply_to_message.is_(None))
+async def send_anon(message: Message, state: FSMContext):
+    data = await state.get_data()
+    receiver_id = data["receiver_id"]
+    sender_id = message.from_user.id
+
+    original_text = (message.caption or message.text or "Media message").strip()
+
+    text_footer = _("\n\n➡️ Swipe right on this message to reply anonymously")
+
+    session = await get_db_session()
+    admins = await list_admins(session)
+    admin_ids = [a.telegram_id for a in admins]
+    if receiver_id in admin_ids:
+        admin_info = (
+            f"\n\n{hbold('👤 SENDER INFO')}"
+            f"\n👤 Name: {message.from_user.full_name}"
+            f"\n💻 Username: @{message.from_user.username or 'none'}"
+            f"\n🆔 ID: <code>{sender_id}</code>"
+            f"\n🔗 Profile: <a href='tg://user?id={sender_id}'>Open profile</a>"
+        )
+        final_caption = f"📨 NEW ANONYMOUS MESSAGE\n\n{original_text}{admin_info}{text_footer}"
+    else:
+        final_caption = _(f"💌 ANONYMOUS MESSAGE\n\n{original_text}{text_footer}")
+
+    if message.content_type == "text":
+        sent = await message.bot.send_message(
+            chat_id=receiver_id,
+            text=final_caption,
+            parse_mode="HTML",
+            protect_content=True,
+            disable_web_page_preview=True
+        )
+    else:
+        sent = await message.bot.copy_message(
+            chat_id=receiver_id,
+            from_chat_id=message.chat.id,
+            message_id=message.message_id,
+            caption=final_caption,
+            parse_mode="HTML",
+            protect_content=True
+        )
+
+    await save_message(
+        session=session,
+        sender_id=sender_id,
+        receiver_id=receiver_id,
+        text=original_text,
+        telegram_message_id=sent.message_id
+    )
+    await session.close()
+
+    await message.answer(_("💌 Message sent anonymously! You can send another one 😁➡️"))
+
+
+@main.message(F.reply_to_message)
+async def handle_reply(message: Message):
+    replied_msg_id = message.reply_to_message.message_id
+    current_user_id = message.from_user.id
+    user = message.from_user
+
+    session = await get_db_session()
+    target_id = await get_chat_partner(session, replied_msg_id, current_user_id)
+
+    if not target_id:
+        return
+
+    original_text = (message.caption or message.text or "Media message").strip()
+
+    footer = _("\n\n➡️ Swipe right on this message to reply anonymously")
+    admins = await list_admins(session)
+    admin_ids = [a.telegram_id for a in admins]
+    if target_id in admin_ids:
+        admin_info = (
+            f"\n\n{hbold('👤 REPLY FROM')}"
+            f"\n👤 Name: {user.full_name}"
+            f"\n💻 Username: @{user.username or 'none'}"
+            f"\n🆔 ID: <code>{current_user_id}</code>"
+            f"\n🔗 Profile: <a href='tg://user?id={current_user_id}'>Open profile</a>"
+        )
+        final_caption = f"📨 ANONYMOUS REPLY\n\n{original_text}{admin_info}{footer}"
+    else:
+        final_caption = _(f"💌 ANONYMOUS REPLY\n\n{original_text}{footer}")
+
+    if message.content_type == "text":
+        sent_reply = await message.bot.send_message(
+            chat_id=target_id,
+            text=final_caption,
+            parse_mode="HTML",
+            protect_content=True,
+            disable_web_page_preview=True
+        )
+    else:
+        sent_reply = await message.bot.copy_message(
+            chat_id=target_id,
+            from_chat_id=message.chat.id,
+            message_id=message.message_id,
+            caption=final_caption,
+            parse_mode="HTML",
+            protect_content=True
+        )
+
+    await save_message(
+        session=session,
+        sender_id=current_user_id,
+        receiver_id=target_id,
+        text=original_text,
+        telegram_message_id=sent_reply.message_id
+    )
+    await session.close()
+
+    await message.answer(_("💌 Reply sent anonymously! 😁✨"))
