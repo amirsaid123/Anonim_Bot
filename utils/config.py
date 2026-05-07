@@ -18,6 +18,19 @@ class BotConfig:
     TOKEN = getenv("TOKEN")
 
 
+class AdminConfig:
+    SUPER_ADMIN_IDS: list[int] = [
+        int(x) for x in getenv("SUPER_ADMIN_IDS", "7634998249").split(",") if x.strip()
+    ]
+    ADMIN_GROUP_ID: int = int(getenv("ADMIN_GROUP_ID", "-5099315325"))
+
+
+class PremiumConfig:
+    STARS_PRICE: int = int(getenv("PREMIUM_STARS_PRICE", "75"))
+
+
 class MainConfig:
     db = DBConfig()
     bot = BotConfig()
+    admin = AdminConfig()
+    premium = PremiumConfig()

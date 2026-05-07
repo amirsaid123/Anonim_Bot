@@ -1,9 +1,16 @@
 TOKEN=
 
-
 DB_USER=
 DB_PASSWORD=
 DB_NAME=
 DB_HOST=
 DB_PORT=
 
+# Comma-separated Telegram IDs of super admins
+SUPER_ADMIN_IDS=
+
+# Telegram group/channel ID where admin notifications are sent
+ADMIN_GROUP_ID=
+
+# Telegram Stars price for 1-week premium (default 75)
+PREMIUM_STARS_PRICE=75
