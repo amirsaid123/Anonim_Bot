@@ -6,6 +6,9 @@ class UserStates(StatesGroup):
     waiting_for_message = State()
     waiting_for_add_admin = State()
     waiting_for_remove_admin = State()
+    waiting_for_welcome_message = State()
+    waiting_for_broadcast = State()
+    confirming_broadcast = State()
 
 class LanguageStates(StatesGroup):
     language = State()

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-11-26 00:50+0500\n"
+"POT-Creation-Date: 2026-05-26 21:52+0500\n"
 "PO-Revision-Date: 2025-11-26 00:51+0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.17.0\n"
 
-#: bot/functions/make_reply_button.py:14
+#: bot/functions/make_reply_button.py:15
 msgid "Back ◀️"
 msgstr ""
 
@@ -26,66 +26,79 @@ msgstr ""
 msgid "Back 🔙"
 msgstr ""
 
-#: bot/handlers/main_router.py:35
+#: bot/handlers/main_router.py:44
+msgid "🔗 Create a link"
+msgstr ""
+
+#: bot/handlers/main_router.py:45
+msgid "💬 Comments and Offers"
+msgstr ""
+
+#: bot/handlers/main_router.py:46
+msgid "ℹ️ About bot"
+msgstr ""
+
+#: bot/handlers/main_router.py:47 bot/handlers/main_router.py:63
+msgid "⚙️ Settings"
+msgstr ""
+
+#: bot/handlers/main_router.py:50
+msgid "Welcome back to the Main Menu 🏠"
+msgstr ""
+
+#: bot/handlers/main_router.py:56
+msgid "✏️ My welcome message"
+msgstr ""
+
+#: bot/handlers/main_router.py:57
+msgid "📊 My stats"
+msgstr ""
+
+#: bot/handlers/main_router.py:58
+msgid "🚫 Blocked users"
+msgstr ""
+
+#: bot/handlers/main_router.py:59
+msgid "🌐 Language 🇺🇸/🇺🇿/🇷🇺"
+msgstr ""
+
+#: bot/handlers/main_router.py:60 bot/handlers/main_router.py:250
+msgid "🔙 Back to menu"
+msgstr ""
+
+#: bot/handlers/main_router.py:95
 msgid "❌ Invalid link!"
 msgstr ""
 
-#: bot/handlers/main_router.py:42
+#: bot/handlers/main_router.py:106
+#, python-brace-format
+msgid ""
+"💬 Welcome message from this user:\n"
+"\n"
+"{text}"
+msgstr ""
+
+#: bot/handlers/main_router.py:113
 msgid ""
 "You are now sending an anonymous message to this user 💌.\n"
 "Type your message below:"
 msgstr ""
 
-#: bot/handlers/main_router.py:50 bot/handlers/main_router.py:261
-#: bot/handlers/main_router.py:313
-msgid "🔗 Create a link"
-msgstr ""
-
-#: bot/handlers/main_router.py:51 bot/handlers/main_router.py:262
-#: bot/handlers/main_router.py:314
-msgid "💬 Comments and Offers"
-msgstr ""
-
-#: bot/handlers/main_router.py:52 bot/handlers/main_router.py:263
-#: bot/handlers/main_router.py:315
-msgid "ℹ️ About bot"
-msgstr ""
-
-#: bot/handlers/main_router.py:53 bot/handlers/main_router.py:264
-#: bot/handlers/main_router.py:316
-msgid "🌐 Language 🇺🇸/🇺🇿/🇷🇺"
-msgstr ""
-
-#: bot/handlers/main_router.py:57
+#: bot/handlers/main_router.py:119
 msgid "Welcome to Anonymous chat bot!"
 msgstr ""
 
-#: bot/handlers/main_router.py:69 bot/handlers/main_router.py:130
-msgid ""
-"\n"
-"\n"
-"➡️ Swipe right on this message to reply anonymously"
-msgstr ""
-
-#: bot/handlers/main_router.py:112
-msgid "💌 Message sent anonymously! You can send another one 😁➡️"
-msgstr ""
-
-#: bot/handlers/main_router.py:173
-msgid "💌 Reply sent anonymously! 😁✨"
-msgstr ""
-
-#: bot/handlers/main_router.py:193
+#: bot/handlers/main_router.py:143
 msgid "Your unique link has been created! 💫"
 msgstr ""
 
-#: bot/handlers/main_router.py:194
+#: bot/handlers/main_router.py:144
 msgid "📎 Send this link to others so they can message you anonymously 💌✨:"
 msgstr ""
 
-#: bot/handlers/main_router.py:210
+#: bot/handlers/main_router.py:156
 msgid ""
-"ℹ️ *About This Bot*\n"
+"ℹ️ About This Bot\n"
 "\n"
 "1️⃣ This bot lets people send anonymous messages to others via a personal"
 " link 💌\n"
@@ -99,27 +112,565 @@ msgid ""
 "5️⃣ Enjoy sending and receiving anonymous messages safely 🥂"
 msgstr ""
 
-#: bot/handlers/main_router.py:234
+#: bot/handlers/main_router.py:176
 msgid "Please type your comment below 💬. Press 'Back ◀️' to go to the main menu."
 msgstr ""
 
-#: bot/handlers/main_router.py:255
+#: bot/handlers/main_router.py:200
 msgid "Thank you for your comment 💬! Feel free to add another one 😁."
 msgstr ""
 
-#: bot/handlers/main_router.py:270
-msgid "Welcome back to the Main Menu 🏠"
+#: bot/handlers/main_router.py:239
+#, python-brace-format
+msgid ""
+"Current welcome:\n"
+"\n"
+"{text}\n"
+"\n"
+"Send new text to replace it, tap 🗑 Clear to remove it, or 🔙 Back to menu "
+"to cancel."
 msgstr ""
 
-#: bot/handlers/main_router.py:286
-msgid "🌐 Please choose your preferred language"
+#: bot/handlers/main_router.py:244
+#, python-brace-format
+msgid ""
+"You don't have a welcome message yet. Send some text (up to {n} chars) to"
+" set one, or 🔙 Back to menu to cancel."
+msgstr ""
+
+#: bot/handlers/main_router.py:250
+msgid "🗑 Clear"
+msgstr ""
+
+#: bot/handlers/main_router.py:261
+msgid "✅ Welcome message cleared."
+msgstr ""
+
+#: bot/handlers/main_router.py:278
+msgid "❌ Please send text only (no media)."
+msgstr ""
+
+#: bot/handlers/main_router.py:281
+#, python-brace-format
+msgid "❌ Too long. Max {n} characters."
+msgstr ""
+
+#: bot/handlers/main_router.py:295
+#, python-brace-format
+msgid ""
+"✅ Welcome message saved:\n"
+"\n"
+"{text}"
+msgstr ""
+
+#: bot/handlers/main_router.py:314
+#, python-brace-format
+msgid "   └ Top sender: <b>{handle}</b> ({n} messages)"
+msgstr ""
+
+#: bot/handlers/main_router.py:318
+msgid "   └ Top sender: —"
 msgstr ""
 
 #: bot/handlers/main_router.py:321
-msgid "Language has been changed 😀"
+msgid "📊 <b>Your stats</b>"
 msgstr ""
 
 #: bot/handlers/main_router.py:323
+msgid "📥 <b>Received</b>"
+msgstr ""
+
+#: bot/handlers/main_router.py:324 bot/handlers/main_router.py:327
+#, python-brace-format
+msgid "   ├ This week: <b>{n}</b>"
+msgstr ""
+
+#: bot/handlers/main_router.py:325 bot/handlers/main_router.py:328
+#, python-brace-format
+msgid "   └ All time: <b>{n}</b>"
+msgstr ""
+
+#: bot/handlers/main_router.py:326
+msgid "📤 <b>Sent</b>"
+msgstr ""
+
+#: bot/handlers/main_router.py:329
+msgid "👥 <b>People</b>"
+msgstr ""
+
+#: bot/handlers/main_router.py:330
+#, python-brace-format
+msgid "   ├ Unique senders: <b>{n}</b>"
+msgstr ""
+
+#: bot/handlers/main_router.py:345 bot/handlers/main_router.py:386
+msgid "You haven't blocked anyone yet."
+msgstr ""
+
+#: bot/handlers/main_router.py:352
+#, python-brace-format
+msgid "❎ Unblock {handle}"
+msgstr ""
+
+#: bot/handlers/main_router.py:356
+msgid "Your blocked users:"
+msgstr ""
+
+#: bot/handlers/main_router.py:364 bot/handlers/main_router.py:939
+msgid "❌ Invalid action."
+msgstr ""
+
+#: bot/handlers/main_router.py:372
+msgid "✅ Unblocked."
+msgstr ""
+
+#: bot/handlers/main_router.py:390
+msgid "This user wasn't on your block list."
+msgstr ""
+
+#: bot/handlers/main_router.py:399
+msgid "🌐 Please choose your preferred language"
+msgstr ""
+
+#: bot/handlers/main_router.py:417
 msgid "❌ Invalid language selection! Please choose a valid language 🌐"
 msgstr ""
+
+#: bot/handlers/main_router.py:425
+msgid "Language has been changed 😀"
+msgstr ""
+
+#: bot/handlers/main_router.py:435
+msgid "⛔ You are not authorized."
+msgstr ""
+
+#: bot/handlers/main_router.py:439
+msgid "➕ Add Admin"
+msgstr ""
+
+#: bot/handlers/main_router.py:440
+msgid "➖ Remove Admin"
+msgstr ""
+
+#: bot/handlers/main_router.py:441
+msgid "📋 See All Admins"
+msgstr ""
+
+#: bot/handlers/main_router.py:442
+msgid "📊 Bot Statistics"
+msgstr ""
+
+#: bot/handlers/main_router.py:443
+msgid "📢 Broadcast"
+msgstr ""
+
+#: bot/handlers/main_router.py:446
+msgid "Welcome to the Admin panel"
+msgstr ""
+
+#: bot/handlers/main_router.py:452 bot/handlers/main_router.py:480
+#: bot/handlers/main_router.py:512 bot/handlers/main_router.py:553
+#: bot/handlers/main_router.py:659 bot/handlers/main_router.py:707
+msgid "Not allowed"
+msgstr ""
+
+#: bot/handlers/main_router.py:455
+msgid "Send the id of the user you want to add as admin"
+msgstr ""
+
+#: bot/handlers/main_router.py:465 bot/handlers/main_router.py:493
+msgid "❌ Invalid ID! Please send a numeric Telegram ID."
+msgstr ""
+
+#: bot/handlers/main_router.py:473
+msgid "✅ Admin has been added successfully!"
+msgstr ""
+
+#: bot/handlers/main_router.py:483
+msgid "Send the id of the user you want to remove as admin"
+msgstr ""
+
+#: bot/handlers/main_router.py:502
+msgid "✅ Admin has been removed successfully!"
+msgstr ""
+
+#: bot/handlers/main_router.py:504
+msgid "❌ Admin does not exist."
+msgstr ""
+
+#: bot/handlers/main_router.py:518
+msgid "👑 <b>ADMIN PANEL</b>"
+msgstr ""
+
+#: bot/handlers/main_router.py:519
+msgid "👑 <b>Super Admins:</b>"
+msgstr ""
+
+#: bot/handlers/main_router.py:523
+msgid "🛡 <b>Admins:</b>"
+msgstr ""
+
+#: bot/handlers/main_router.py:528
+msgid "No additional admins"
+msgstr ""
+
+#: bot/handlers/main_router.py:591 bot/handlers/main_router.py:611
+msgid "No data yet"
+msgstr ""
+
+#: bot/handlers/main_router.py:597 bot/handlers/main_router.py:598
+msgid "msgs"
+msgstr ""
+
+#: bot/handlers/main_router.py:599
+msgid "hits"
+msgstr ""
+
+#: bot/handlers/main_router.py:617
+msgid "📊 <b>BOT STATISTICS DASHBOARD</b>"
+msgstr ""
+
+#: bot/handlers/main_router.py:619
+msgid "👥 <b>Users</b>"
+msgstr ""
+
+#: bot/handlers/main_router.py:620 bot/handlers/main_router.py:633
+#: bot/handlers/main_router.py:645
+#, python-brace-format
+msgid "   ├ Total: <b>{n}</b>"
+msgstr ""
+
+#: bot/handlers/main_router.py:621
+#, python-brace-format
+msgid "   ├ Joined Today: <b>{n}</b>"
+msgstr ""
+
+#: bot/handlers/main_router.py:622
+#, python-brace-format
+msgid "   ├ Joined This Week: <b>{n}</b>"
+msgstr ""
+
+#: bot/handlers/main_router.py:623
+#, python-brace-format
+msgid "   └ Activation: <b>{a}</b>/<b>{t}</b> (<b>{p}%</b>)"
+msgstr ""
+
+#: bot/handlers/main_router.py:626
+msgid "📈 <b>New Users (last 7 days)</b>"
+msgstr ""
+
+#: bot/handlers/main_router.py:628
+msgid "🌱 <b>Weekly Cohort Activation</b>"
+msgstr ""
+
+#: bot/handlers/main_router.py:629
+#, python-brace-format
+msgid "   └ Joined last 7d: <b>{c}</b>, activated: <b>{a}</b> (<b>{p}%</b>)"
+msgstr ""
+
+#: bot/handlers/main_router.py:632
+msgid "💌 <b>Messages</b>"
+msgstr ""
+
+#: bot/handlers/main_router.py:634
+#, python-brace-format
+msgid "   ├ Sent Today: <b>{n}</b>"
+msgstr ""
+
+#: bot/handlers/main_router.py:635
+#, python-brace-format
+msgid "   └ Sent This Week: <b>{n}</b>"
+msgstr ""
+
+#: bot/handlers/main_router.py:636
+msgid "🔥 <b>Top Senders (this week)</b>"
+msgstr ""
+
+#: bot/handlers/main_router.py:638
+msgid "⭐ <b>Top Receivers (this week)</b>"
+msgstr ""
+
+#: bot/handlers/main_router.py:640
+msgid "🦠 <b>Most Viral Links (all-time clicks)</b>"
+msgstr ""
+
+#: bot/handlers/main_router.py:642
+msgid "🌍 <b>Languages</b>"
+msgstr ""
+
+#: bot/handlers/main_router.py:644
+msgid "💬 <b>Comments</b>"
+msgstr ""
+
+#: bot/handlers/main_router.py:646
+#, python-brace-format
+msgid "   └ Today: <b>{n}</b>"
+msgstr ""
+
+#: bot/handlers/main_router.py:662
+msgid "Send the broadcast message text:"
+msgstr ""
+
+#: bot/handlers/main_router.py:675
+msgid "❌ Please send text only."
+msgstr ""
+
+#: bot/handlers/main_router.py:683
+msgid "✅ Send"
+msgstr ""
+
+#: bot/handlers/main_router.py:684
+msgid "❌ Cancel"
+msgstr ""
+
+#: bot/handlers/main_router.py:688
+#, python-brace-format
+msgid ""
+"📢 <b>Broadcast preview:</b>\n"
+"\n"
+"{text}\n"
+"\n"
+"Send to <b>{n}</b> users?"
+msgstr ""
+
+#: bot/handlers/main_router.py:700
+msgid "❌ Broadcast cancelled."
+msgstr ""
+
+#: bot/handlers/main_router.py:715
+msgid "❌ No broadcast text found."
+msgstr ""
+
+#: bot/handlers/main_router.py:719
+msgid "📡 Broadcasting..."
+msgstr ""
+
+#: bot/handlers/main_router.py:737
+#, python-brace-format
+msgid ""
+"✅ Broadcast complete.\n"
+"Sent: <b>{s}</b>\n"
+"Failed: <b>{f}</b>"
+msgstr ""
+
+#: bot/handlers/main_router.py:747
+msgid "🚫 Block this sender"
+msgstr ""
+
+#: bot/handlers/main_router.py:760
+msgid "❌ You can't send anonymous messages to yourself."
+msgstr ""
+
+#: bot/handlers/main_router.py:765 bot/handlers/main_router.py:858
+msgid "🚫 This user has blocked anonymous messages from you."
+msgstr ""
+
+#: bot/handlers/main_router.py:778 bot/handlers/main_router.py:870
+msgid "Media message"
+msgstr ""
+
+#: bot/handlers/main_router.py:779 bot/handlers/main_router.py:871
+msgid ""
+"\n"
+"\n"
+"➡️ Swipe right on this message to reply anonymously"
+msgstr ""
+
+#: bot/handlers/main_router.py:789 bot/handlers/main_router.py:880
+msgid "none"
+msgstr ""
+
+#: bot/handlers/main_router.py:791
+msgid "👤 SENDER INFO"
+msgstr ""
+
+#: bot/handlers/main_router.py:792 bot/handlers/main_router.py:883
+#, python-brace-format
+msgid "🎭 Anon handle: <b>{handle}</b>"
+msgstr ""
+
+#: bot/handlers/main_router.py:793 bot/handlers/main_router.py:884
+#, python-brace-format
+msgid "👤 Name: {name}"
+msgstr ""
+
+#: bot/handlers/main_router.py:794 bot/handlers/main_router.py:885
+#, python-brace-format
+msgid "💻 Username: @{username}"
+msgstr ""
+
+#: bot/handlers/main_router.py:795 bot/handlers/main_router.py:886
+#, python-brace-format
+msgid "🆔 ID: <code>{id}</code>"
+msgstr ""
+
+#: bot/handlers/main_router.py:796 bot/handlers/main_router.py:887
+#, python-brace-format
+msgid "🔗 Profile: <a href='tg://user?id={id}'>Open profile</a>"
+msgstr ""
+
+#: bot/handlers/main_router.py:800
+#, python-brace-format
+msgid ""
+"📨 NEW ANONYMOUS MESSAGE\n"
+"\n"
+"{text}{info}{footer}"
+msgstr ""
+
+#: bot/handlers/main_router.py:804
+#, python-brace-format
+msgid ""
+"💌 ANONYMOUS MESSAGE from <b>{handle}</b>\n"
+"\n"
+"{text}{footer}"
+msgstr ""
+
+#: bot/handlers/main_router.py:842
+msgid "💌 Message sent anonymously! You can send another one 😁➡️"
+msgstr ""
+
+#: bot/handlers/main_router.py:882
+msgid "👤 REPLY FROM"
+msgstr ""
+
+#: bot/handlers/main_router.py:891
+#, python-brace-format
+msgid ""
+"📨 ANONYMOUS REPLY\n"
+"\n"
+"{text}{info}{footer}"
+msgstr ""
+
+#: bot/handlers/main_router.py:895
+#, python-brace-format
+msgid ""
+"💌 ANONYMOUS REPLY from <b>{handle}</b>\n"
+"\n"
+"{text}{footer}"
+msgstr ""
+
+#: bot/handlers/main_router.py:931
+msgid "💌 Reply sent anonymously! 😁✨"
+msgstr ""
+
+#: bot/handlers/main_router.py:945
+msgid "❌ You can't block yourself."
+msgstr ""
+
+#: bot/handlers/main_router.py:954
+#, python-brace-format
+msgid "✅ Blocked {handle}. They can no longer reach you here."
+msgstr ""
+
+#: bot/handlers/main_router.py:958
+msgid "Already blocked."
+msgstr ""
+
+#~ msgid ""
+#~ "ℹ️ *About This Bot*\n"
+#~ "\n"
+#~ "1️⃣ This bot lets people send "
+#~ "anonymous messages to others via a "
+#~ "personal link 💌\n"
+#~ "\n"
+#~ "2️⃣ All sender information is kept private 👤\n"
+#~ "\n"
+#~ "3️⃣ Messages are delivered instantly and securely ⚡️🔒\n"
+#~ "\n"
+#~ "4️⃣ Please avoid offensive or curse words while sending messages 🤬\n"
+#~ "\n"
+#~ "5️⃣ Enjoy sending and receiving anonymous messages safely 🥂"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "💌 ANONYMOUS MESSAGE\n"
+#~ "\n"
+#~ "{text}{footer}"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "💌 ANONYMOUS REPLY\n"
+#~ "\n"
+#~ "{text}{footer}"
+#~ msgstr ""
+
+#~ msgid "🥇 <b>Most Active User</b>"
+#~ msgstr ""
+
+#~ msgid "   └ ID: <code>{id}</code>"
+#~ msgstr ""
+
+#~ msgid "   └ Messages: <b>{count}</b>"
+#~ msgstr ""
+
+#~ msgid "   ├ Total Users: <b>{n}</b>"
+#~ msgstr ""
+
+#~ msgid "   └ Joined This Week: <b>{n}</b>"
+#~ msgstr ""
+
+#~ msgid "   ├ Total Messages: <b>{n}</b>"
+#~ msgstr ""
+
+#~ msgid "   ├ Total Comments: <b>{n}</b>"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "ℹ️ About This Bot\n"
+#~ "\n"
+#~ "1️⃣ This bot lets people send "
+#~ "anonymous messages to others via a "
+#~ "personal link 💌\n"
+#~ "\n"
+#~ "2️⃣ All sender information is kept private 👤\n"
+#~ "\n"
+#~ "3️⃣ Messages are delivered instantly and securely ⚡️🔒\n"
+#~ "\n"
+#~ "4️⃣ Please avoid offensive or curse words while sending messages 🤬\n"
+#~ "\n"
+#~ "5️⃣ Enjoy sending and receiving anonymous messages safely 🥂"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "ℹ️ <b>About Anonim Bot</b>\n"
+#~ "<i>Get honest messages from anyone — anonymously.</i>\n"
+#~ "\n"
+#~ "━━━━━━━━━━━━━━━━━━\n"
+#~ "\n"
+#~ "✨ <b>How it works</b>\n"
+#~ "   • Share your personal link 🔗\n"
+#~ "   • Anyone can send you anonymous messages 💌\n"
+#~ "   • Reply by swiping right on a message ↩️\n"
+#~ "\n"
+#~ "🔒 <b>Privacy</b>\n"
+#~ "   • Sender identity stays hidden 👤\n"
+#~ "   • Messages are delivered instantly and securely ⚡️\n"
+#~ "\n"
+#~ "⚠️ <b>Rules</b>\n"
+#~ "   • No offensive language or harassment 🚫\n"
+#~ "   • Be respectful — keep it fun 🥂\n"
+#~ "\n"
+#~ "━━━━━━━━━━━━━━━━━━\n"
+#~ "💡 <i>Tap \"{cta}\" to start!</i>"
+#~ msgstr ""
+#~ "ℹ️ <b>About Anonim Bot</b>\n"
+#~ "<i>Get honest messages from anyone — anonymously.</i>\n"
+#~ "\n"
+#~ "━━━━━━━━━━━━━━━━━━\n"
+#~ "\n"
+#~ "✨ <b>How it works</b>\n"
+#~ "   • Share your personal link 🔗\n"
+#~ "   • Anyone can send you anonymous messages 💌\n"
+#~ "   • Reply by swiping right on a message ↩️\n"
+#~ "\n"
+#~ "🔒 <b>Privacy</b>\n"
+#~ "   • Sender identity stays hidden 👤\n"
+#~ "   • Messages are delivered instantly and securely ⚡️\n"
+#~ "\n"
+#~ "⚠️ <b>Rules</b>\n"
+#~ "   • No offensive language or harassment 🚫\n"
+#~ "   • Be respectful — keep it fun 🥂\n"
+#~ "\n"
+#~ "━━━━━━━━━━━━━━━━━━\n"
+#~ "💡 <i>Tap \"{cta}\" to start!</i>"
 

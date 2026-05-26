@@ -1,5 +1,8 @@
+from contextlib import asynccontextmanager
+
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker
+
 from utils.config import MainConfig
 
 DATABASE_URL = MainConfig.db.DB_CONFIG
@@ -10,6 +13,8 @@ AsyncSessionLocal = sessionmaker(
     engine, class_=AsyncSession, expire_on_commit=False
 )
 
+
+@asynccontextmanager
 async def get_db_session():
     async with AsyncSessionLocal() as session:
-        return session
+        yield session
